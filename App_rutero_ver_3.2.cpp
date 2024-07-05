@@ -35,6 +35,47 @@ bool validarHora(const string& hora) {
     return true;
 }
 
+// Función principal
+int main() {
+    int opcion;
+
+    do {
+        limpiarPantalla();
+        mostrarEncabezado();
+        mostrarMenuPrincipal();
+        opcion = seleccionarOpcion(1, 4);
+
+        if (opcion != 4) {
+            string hora = obtenerHora();
+            verificarHoraPico(hora);
+            ajustarTiemposParaHoraPico();
+        }
+
+        switch (opcion) {
+            case 1:
+                accionPasajero();
+                break;
+            case 2:
+                accionConductor();
+                break;
+            case 3:
+                accionDatero();
+                break;
+            case 4:
+                cout << "Saliendo del sistema..." << endl;
+                break;
+        }
+
+        if (opcion != 4) {
+            cout << "Presione cualquier tecla para volver al menu principal..." << endl;
+            cin.ignore().get();
+        }
+
+    } while (opcion != 4);
+
+    return 0;
+}
+
 // Función para ajustar tiempos en horas pico
 void ajustarTiemposParaHoraPico() {
     if (hora_pico) {
@@ -315,45 +356,4 @@ int seleccionarOpcion(int min, int max) {
         cin >> opcion;
     } while (opcion < min || opcion > max);
     return opcion;
-}
-
-// Función principal
-int main() {
-    int opcion;
-
-    do {
-        limpiarPantalla();
-        mostrarEncabezado();
-        mostrarMenuPrincipal();
-        opcion = seleccionarOpcion(1, 4);
-
-        if (opcion != 4) {
-            string hora = obtenerHora();
-            verificarHoraPico(hora);
-            ajustarTiemposParaHoraPico();
-        }
-
-        switch (opcion) {
-            case 1:
-                accionPasajero();
-                break;
-            case 2:
-                accionConductor();
-                break;
-            case 3:
-                accionDatero();
-                break;
-            case 4:
-                cout << "Saliendo del sistema..." << endl;
-                break;
-        }
-
-        if (opcion != 4) {
-            cout << "Presione cualquier tecla para volver al menu principal..." << endl;
-            cin.ignore().get();
-        }
-
-    } while (opcion != 4);
-
-    return 0;
 }
