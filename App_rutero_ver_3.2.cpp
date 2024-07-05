@@ -1,3 +1,13 @@
+/* 
+Código fuente de App Rutero
+Lenguaje de codificación: C++
+Desarrollo, diseño y programación: Equipo Rutero
+Universidad Nacional Mayor de San Marcos - Facultad de Ingeniería Industrial
+Curso: Computación y programación
+Ciclo: 2024-I
+Subido por: Sebastian Mamani
+*/
+
 #include <iostream>
 #include <cstdlib> // Para system("clear") o system("CLS")
 
