@@ -9,7 +9,9 @@ Subido por: Sebastian Mamani
 */
 
 #include <iostream>
-#include <cstdlib> // Para system("clear") o system("CLS")
+#include <cstdlib>
+#include <sstream> // Para std::istringstream
+#include <iomanip> // Para std::get_time
 
 using namespace std;
 
@@ -19,68 +21,21 @@ int tiempo_paradero1_vuelta = 6, tiempo_paradero2_vuelta = 8, tiempo_paradero3_v
 int retraso1_ida = 0, retraso2_ida = 0, retraso3_ida = 0, retraso4_ida = 0;
 int retraso1_vuelta = 0, retraso2_vuelta = 0, retraso3_vuelta = 0, retraso4_vuelta = 0;
 bool hora_pico = false;
-void ajustarTiemposParaHoraPico();
-void mostrarParaderos(int empresa);
-int calcularTiempoDeViaje(int paradero_inicio, int paradero_destino, bool ida);
-void mostrarEncabezado();
-void limpiarPantalla();
-void accionPasajero();
-void accionDatero();
-void accionConductor();
 
+// Función para validar la hora en formato HH:MM
+bool validarHora(const string& hora) {
+    istringstream ss(hora);
+    int hh, mm;
+    char delim;
+    
+    if (!(ss >> hh >> delim >> mm) || delim != ':' || hh < 0 || hh >= 24 || mm < 0 || mm >= 60) {
+        return false;
+    }
 
-// Función principal
-int main() {
-    int opcion;
-
-    do {
-        limpiarPantalla();
-        mostrarEncabezado();
-
-        cout << "------------------------------------------------" << endl;
-        cout << "|                 Menu Principal               |" << endl;
-        cout << "------------------------------------------------" << endl;
-        cout << "| 1. Pasajero                                  |" << endl;
-        cout << "| 2. Conductor                                 |" << endl;
-        cout << "| 3. Datero                                    |" << endl;
-        cout << "| 4. Salir                                     |" << endl;
-        cout << "| Seleccione una opcion:                       |" << endl;
-        cout << "------------------------------------------------" << endl;
-        cin >> opcion;
-
-        limpiarPantalla();
-        mostrarEncabezado();
-
-        switch (opcion) {
-            case 1:
-                accionPasajero();
-                break;
-            case 2:
-                accionConductor();
-                break;
-            case 3:
-                accionDatero();
-                break;
-            case 4:
-                cout << "Saliendo del programa..." << endl;
-                break;
-            default:
-                cout << "Opcion invalida, intente nuevamente." << endl;
-                break;
-        }
-
-        if (opcion != 4) {
-            cout << "Presione cualquier tecla para continuar..." << endl;
-            cin.ignore();
-            cin.get();
-        }
-
-    } while (opcion != 4);
-
-    return 0;
+    return true;
 }
 
-// Funciones para ajustar tiempos en horas pico
+// Función para ajustar tiempos en horas pico
 void ajustarTiemposParaHoraPico() {
     if (hora_pico) {
         tiempo_paradero1_ida += 20;
@@ -161,7 +116,7 @@ int calcularTiempoDeViaje(int paradero_inicio, int paradero_destino, bool ida) {
 void mostrarEncabezado() {
     cout << "************************************************" << endl;
     cout << "*                                              *" << endl;
-    cout << "*              PROGRAMA RUTERO                 *" << endl;
+    cout << "*                 RUTERO APP                   *" << endl;
     cout << "*                                              *" << endl;
     cout << "************************************************" << endl;
 }
@@ -175,9 +130,36 @@ void limpiarPantalla() {
     #endif
 }
 
+// Función para obtener la hora en formato HH:MM
+string obtenerHora() {
+    string hora;
+    do {
+        cout << "------------------------------------------------" << endl;
+        cout << "| Ingrese la hora actual (formato 24h HH:MM):   |" << endl;
+        cout << "| (Por ejemplo, para 7:30 PM ingrese 19:30):    |" << endl;
+        cout << "------------------------------------------------" << endl;
+        cin >> hora;
+    } while (!validarHora(hora));
+
+    return hora;
+}
+
+// Función para verificar si es hora pico
+void verificarHoraPico(const string& hora) {
+    int hh = stoi(hora.substr(0, 2));
+    if ((hh >= 7 && hh < 10) || (hh >= 17 && hh < 20)) {
+        hora_pico = true;
+    } else {
+        hora_pico = false;
+    }
+}
+
 // Función para la acción del pasajero
 void accionPasajero() {
     int paradero_usuario, paradero_destino;
+
+    string hora = obtenerHora();
+    verificarHoraPico(hora);
 
     cout << "------------------------------------------------" << endl;
     cout << "|              Seleccion de Paraderos          |" << endl;
@@ -221,6 +203,9 @@ void accionPasajero() {
 void accionDatero() {
     int empresa, paradero_usuario, opcion_datero, accion_datero, retraso;
 
+    string hora = obtenerHora();
+    verificarHoraPico(hora);
+
     cout << "------------------------------------------------" << endl;
     cout << "|              Reporte del datero              |" << endl;
     cout << "------------------------------------------------" << endl;
@@ -259,9 +244,9 @@ void accionDatero() {
     cin >> accion_datero;
 
     if (accion_datero == 1) {
-        cout << "--------------------------------------------------" << endl;
-        cout << "| Ingrese el retraso en minutos:                 |" << endl;
-        cout << "--------------------------------------------------" << endl;
+        cout << "------------------------------------------------" << endl;
+        cout << "| Ingrese el tiempo de retraso en minutos:      |" << endl;
+        cout << "------------------------------------------------" << endl;
         cin >> retraso;
 
         if (opcion_datero == 1) {
@@ -269,7 +254,7 @@ void accionDatero() {
             else if (paradero_usuario == 2) retraso2_ida = retraso;
             else if (paradero_usuario == 3) retraso3_ida = retraso;
             else if (paradero_usuario == 4) retraso4_ida = retraso;
-        } else if (opcion_datero == 2) {
+        } else {
             if (paradero_usuario == 1) retraso1_vuelta = retraso;
             else if (paradero_usuario == 2) retraso2_vuelta = retraso;
             else if (paradero_usuario == 3) retraso3_vuelta = retraso;
@@ -281,7 +266,7 @@ void accionDatero() {
             else if (paradero_usuario == 2) retraso2_ida = 0;
             else if (paradero_usuario == 3) retraso3_ida = 0;
             else if (paradero_usuario == 4) retraso4_ida = 0;
-        } else if (opcion_datero == 2) {
+        } else {
             if (paradero_usuario == 1) retraso1_vuelta = 0;
             else if (paradero_usuario == 2) retraso2_vuelta = 0;
             else if (paradero_usuario == 3) retraso3_vuelta = 0;
@@ -292,32 +277,83 @@ void accionDatero() {
     limpiarPantalla();
     mostrarEncabezado();
 
-    cout << "----------------------------------------------------" << endl;
-    cout << "| Se ha actualizado el reporte de retrasos         |" << endl;
-    cout << "----------------------------------------------------" << endl;
+    cout << "---------------------------------------------" << endl;
+    cout << "| Accion realizada correctamente.           |" << endl;
+    cout << "---------------------------------------------" << endl;
 }
 
 // Función para la acción del conductor
 void accionConductor() {
-    char respuesta;
-    cout << "------------------------------------------------" << endl;
-    cout << "|           Reporte del Conductor              |" << endl;
-    cout << "------------------------------------------------" << endl;
-    cout << "| Desea indicar que esta en hora pico? (S/N):  |" << endl;
-    cout << "------------------------------------------------" << endl;
-    cin >> respuesta;
-
-    if (respuesta == 'S' || respuesta == 's') {
-        hora_pico = true;
-        ajustarTiemposParaHoraPico();
-    } else {
-        hora_pico = false;
-    }
+    string hora = obtenerHora();
+    verificarHoraPico(hora);
 
     limpiarPantalla();
     mostrarEncabezado();
 
     cout << "------------------------------------------------" << endl;
-    cout << "| Se ha actualizado el estado de hora pico.     |" << endl;
+    cout << "| La hora ha sido registrada correctamente.    |" << endl;
     cout << "------------------------------------------------" << endl;
+}
+
+// Función para mostrar el menú principal
+void mostrarMenuPrincipal() {
+    cout << "------------------------------------------------" << endl;
+    cout << "|     Bienvenido al sistema de rutero          |" << endl;
+    cout << "------------------------------------------------" << endl;
+    cout << "| Seleccione su tipo de usuario:               |" << endl;
+    cout << "| 1. Pasajero                                  |" << endl;
+    cout << "| 2. Conductor                                 |" << endl;
+    cout << "| 3. Datero                                    |" << endl;
+    cout << "| 4. Salir                                     |" << endl;
+    cout << "------------------------------------------------" << endl;
+}
+
+int seleccionarOpcion(int min, int max) {
+    int opcion;
+    do {
+        cout << "Seleccione una opcion (" << min << "-" << max << "): ";
+        cin >> opcion;
+    } while (opcion < min || opcion > max);
+    return opcion;
+}
+
+// Función principal
+int main() {
+    int opcion;
+
+    do {
+        limpiarPantalla();
+        mostrarEncabezado();
+        mostrarMenuPrincipal();
+        opcion = seleccionarOpcion(1, 4);
+
+        if (opcion != 4) {
+            string hora = obtenerHora();
+            verificarHoraPico(hora);
+            ajustarTiemposParaHoraPico();
+        }
+
+        switch (opcion) {
+            case 1:
+                accionPasajero();
+                break;
+            case 2:
+                accionConductor();
+                break;
+            case 3:
+                accionDatero();
+                break;
+            case 4:
+                cout << "Saliendo del sistema..." << endl;
+                break;
+        }
+
+        if (opcion != 4) {
+            cout << "Presione cualquier tecla para volver al menu principal..." << endl;
+            cin.ignore().get();
+        }
+
+    } while (opcion != 4);
+
+    return 0;
 }
