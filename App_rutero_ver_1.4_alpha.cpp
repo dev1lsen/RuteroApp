@@ -9,9 +9,6 @@ Subido por: Sebastian Mamani
 */
 
 #include <iostream>
-#include <cstdlib>
-#include <sstream> // Para std::istringstream
-#include <iomanip> // Para std::get_time
 
 #include <iostream>
 using namespace std;
