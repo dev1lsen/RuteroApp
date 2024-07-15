@@ -1,7 +1,7 @@
 # Rutero App
 
 Rutero App es una aplicación para la gestión de rutas de transporte, diseñada para ser utilizada por pasajeros, conductores y dateros. La aplicación permite calcular tiempos de viaje, reportar retrasos y ajustar tiempos de viaje durante las horas pico.
-
+Publicación y difusión: https://www.youtube.com/watch?v=7TF7J42wOM0
 ## Contenidos
 
 - [Instalación](#instalación)
