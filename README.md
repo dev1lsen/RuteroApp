@@ -5,15 +5,6 @@ Rutero App es una aplicación para la gestión de rutas de transporte, diseñada
 ## Contenidos
 
 - [Instalación](#instalación)
-- [Uso](#uso)
-  - [Menú Principal](#menú-principal)
-  - [Acción de Pasajero](#acción-de-pasajero)
-  - [Acción de Conductor](#acción-de-conductor)
-  - [Acción de Datero](#acción-de-datero)
-- [Preguntas Frecuentes](#preguntas-frecuentes)
-- [Contribuciones](#contribuciones)
-- [Licencia](#licencia)
-
 ## Instalación
 
 1. Clona este repositorio en tu máquina local:
@@ -37,4 +28,5 @@ Rutero App es una aplicación para la gestión de rutas de transporte, diseñada
     ```
 
 En Windows, puedes compilar y ejecutar la aplicación usando tu entorno de desarrollo preferido.
-También puedes descargarlo aquí https://acortar.link/fAKp6y
+También puedes descargarlo aquí (archivo ejecutable .exe):
+https://drive.google.com/file/d/1Dj7hEQx5-NLkBPNjhh-KgwlqpIByzs21/view?usp=sharing
